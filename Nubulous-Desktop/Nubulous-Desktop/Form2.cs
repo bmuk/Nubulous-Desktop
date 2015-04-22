@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace Nubulous_Desktop
@@ -16,6 +17,7 @@ namespace Nubulous_Desktop
         private string integration1;
         private string integration2;
         private HashSet<string> fileSet = new HashSet<string>();
+        private Queue<string> duplicates = new Queue<string>();
 
         public Form2(string integration1, string integration2)
         {
@@ -45,7 +47,6 @@ namespace Nubulous_Desktop
             // dedup
             try
             {
-                // loop over all files in integration 1
                 foreach (var dir in Directory.GetDirectories(directory))
                 {
                     foreach (var file in Directory.GetFiles(dir))
@@ -62,6 +63,16 @@ namespace Nubulous_Desktop
             }
         }
 
+        private static string GetChecksum(string filepath)
+        {
+            using (FileStream stream = File.OpenRead(filepath))
+            {
+                SHA256Managed sha = new SHA256Managed();
+                byte[] checksum = sha.ComputeHash(stream);
+                return BitConverter.ToString(checksum).Replace("-", String.Empty);
+            }
+        }
+
         private void button1_Click_1(object sender, EventArgs e)
         {
             var integrations = new List<string>();
@@ -69,17 +80,23 @@ namespace Nubulous_Desktop
             integrations.Add(this.integration2);
             foreach (var integration in integrations)
             {
-                foreach (var file in accumulate(this.integration1))
+                foreach (var file in accumulate(integration))
                 {
-                    if (this.fileSet.Contains(file))
+                    var hash = GetChecksum(file);
+                    if (this.fileSet.Contains(hash))
                     {
-                        Console.WriteLine("Found duplicate");
+                        this.duplicates.Enqueue(file);
                     }
                     else
                     {
-                        this.fileSet.Add(file);
+                        this.fileSet.Add(hash);
                     }
                 }
+            }
+            foreach (var file in this.duplicates)
+            {
+                Console.WriteLine("Deleting file: {}", file);
+                File.Delete(file);
             }
         }
     }
