@@ -52,7 +52,11 @@ namespace Nubulous_Desktop
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            if (textBox1.Text != "" && textBox2.Text != "")
+            {
+                Form2 frm = new Form2();
+                frm.Show();
+            }
         }
     }
 }
