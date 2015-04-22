@@ -122,5 +122,14 @@ namespace Nubulous_Desktop
         {
 
         }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                File.Decrypt(openFileDialog1.FileName);
+                System.Windows.Forms.MessageBox.Show(String.Format("The file, {0}, has been decrypted.", openFileDialog1.FileName));
+            }
+        }
     }
 }
