@@ -79,6 +79,7 @@ namespace Nubulous_Desktop
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            System.Windows.Forms.MessageBox.Show("This may take a while... go get a coffee.");
             var integrations = new List<string>();
             integrations.Add(this.integration1);
             integrations.Add(this.integration2);
