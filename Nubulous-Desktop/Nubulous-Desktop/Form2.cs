@@ -15,7 +15,7 @@ namespace Nubulous_Desktop
     {
         private string integration1;
         private string integration2;
-        private HashSet<string> fileSet;
+        private HashSet<string> fileSet = new HashSet<string>();
 
         public Form2(string integration1, string integration2)
         {
@@ -39,30 +39,47 @@ namespace Nubulous_Desktop
 
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private List<string> accumulate(string directory)
         {
+            var fileList = new List<string>();
             // dedup
             try
             {
                 // loop over all files in integration 1
-                foreach (var directory in Directory.GetDirectories(this.integration1))
+                foreach (var dir in Directory.GetDirectories(directory))
                 {
-                    foreach (var file in Directory.GetFiles(directory))
+                    foreach (var file in Directory.GetFiles(dir))
                     {
-                        Console.WriteLine(file);
+                        fileList.Add(file);
                     }
                 }
-                foreach (var directory in Directory.GetDirectories(this.integration2))
-                {
-                    foreach (var file in Directory.GetFiles(directory))
-                    {
-                        Console.WriteLine(file);
-                    }
-                }
+                return fileList;
             }
             catch (System.Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                return fileList;
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            var integrations = new List<string>();
+            integrations.Add(this.integration1);
+            integrations.Add(this.integration2);
+            foreach (var integration in integrations)
+            {
+                foreach (var file in accumulate(this.integration1))
+                {
+                    if (this.fileSet.Contains(file))
+                    {
+                        Console.WriteLine("Found duplicate");
+                    }
+                    else
+                    {
+                        this.fileSet.Add(file);
+                    }
+                }
             }
         }
     }
