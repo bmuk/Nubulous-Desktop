@@ -101,11 +101,13 @@ namespace Nubulous_Desktop
                     }
                 }
             }
+            var duplicateCount = this.duplicates.Count;
             foreach (var file in this.duplicates)
             {
                 Console.WriteLine("Deleting file: {0}", file);
                 File.Delete(file);
             }
+            System.Windows.Forms.MessageBox.Show(String.Format("Removed {0} duplicate files.", duplicateCount.ToString()));
         }
     }
 }
