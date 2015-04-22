@@ -115,6 +115,7 @@ namespace Nubulous_Desktop
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 File.Encrypt(openFileDialog1.FileName);
+                System.Windows.Forms.MessageBox.Show(String.Format("The file, {0}, has been encrypted.", openFileDialog1.FileName));
             }
         }
         private void label1_Click(object sender, EventArgs e)
