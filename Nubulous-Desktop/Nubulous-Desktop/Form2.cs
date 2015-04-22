@@ -47,6 +47,10 @@ namespace Nubulous_Desktop
             // dedup
             try
             {
+                foreach (var file in Directory.GetFiles(directory))
+                {
+                    fileList.Add(file);
+                }
                 foreach (var dir in Directory.GetDirectories(directory))
                 {
                     foreach (var file in Directory.GetFiles(dir))
@@ -80,22 +84,26 @@ namespace Nubulous_Desktop
             integrations.Add(this.integration2);
             foreach (var integration in integrations)
             {
+                Console.WriteLine("Integration: {0}", integration);
                 foreach (var file in accumulate(integration))
                 {
                     var hash = GetChecksum(file);
+                    Console.WriteLine("File: {0}, Hash: {1}", file, hash);
                     if (this.fileSet.Contains(hash))
                     {
+                        Console.WriteLine("File: {0} is a duplicate", file);
                         this.duplicates.Enqueue(file);
                     }
                     else
                     {
+                        Console.WriteLine("File: {0} is not a duplicate", file);
                         this.fileSet.Add(hash);
                     }
                 }
             }
             foreach (var file in this.duplicates)
             {
-                Console.WriteLine("Deleting file: {}", file);
+                Console.WriteLine("Deleting file: {0}", file);
                 File.Delete(file);
             }
         }
