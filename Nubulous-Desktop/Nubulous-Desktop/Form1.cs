@@ -12,6 +12,9 @@ namespace Nubulous_Desktop
 {
     public partial class Nubulous : Form
     {
+        public static string integration1;
+        public static string integration2;
+
         public Nubulous()
         {
             InitializeComponent();
@@ -24,6 +27,7 @@ namespace Nubulous_Desktop
                 if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
                 {
                     textBox1.Text = folderBrowserDialog1.SelectedPath;
+                    integration1 = folderBrowserDialog1.SelectedPath;
                 }
             }
             else
@@ -31,6 +35,7 @@ namespace Nubulous_Desktop
                 if (folderBrowserDialog2.ShowDialog() == DialogResult.OK)
                 {
                     textBox2.Text = folderBrowserDialog2.SelectedPath;
+                    integration2 = folderBrowserDialog2.SelectedPath;
                 }
             }
         }
