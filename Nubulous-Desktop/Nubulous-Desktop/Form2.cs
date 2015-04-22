@@ -109,5 +109,17 @@ namespace Nubulous_Desktop
             }
             System.Windows.Forms.MessageBox.Show(String.Format("Removed {0} duplicate files.", duplicateCount.ToString()));
         }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                File.Encrypt(openFileDialog1.FileName);
+            }
+        }
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
